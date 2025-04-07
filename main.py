@@ -45,13 +45,38 @@ class WordGuessGame:
         input("Press Enter to start a new game...")
 
     def display_current_word(self):
-        ...
+        display = " ".join([letter if letter in self.guessed_letters else "_" for letter in self.word])
+        print("\nWord: ", display)
+        print("Guessed Letters: ", " ".join(sorted(self.guessed_letters)))
+        print(f"Remaining Attempts: {self.remaining_attempts}")
 
     def get_player_guess(self):
-        ...
+        while True:
+            guess = input("\nEnter a letter: ").lower()
+            if len(guess) != 1 or guess not in string.ascii_lowercase:
+                print("Invalid input. Please enter a single alphabetical character.")
+            elif guess in self.guessed_letters:
+                print("You already guessed that letter. Try a different one.")
+            else:
+                return guess
 
     def play(self):
-        ...
+        self.word = self.fetch_word()
+        self.guessed_letters.clear()
+        self.remaining_attempts = self.max_attempts
+
+        while self.remaining_attempts > 0 and not self.has_won():
+            self.display_current_word()
+            guess = self.get_player_guess()
+            self.guessed_letters.add(guess)
+            if guess not in self.word:
+                self.remaining_attempts -= 1
+
+        self.display_current_word()
+        if self.has_won():
+            print("\nCongratulations! You've guessed the word!")
+        else:
+            print(f"\nGame Over! The word was: {self.word}")
 
     def has_won(self):
         ...
