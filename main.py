@@ -82,8 +82,13 @@ class WordGuessGame:
         return all(letter in self.guessed_letters for letter in self.word)
 
     def prompt_replay(self):
-        choice = input("\nDo you want to play again? (y/n): ").lower()
-        return choice == 'y'
+        while True:
+            choice = input("\nWould you like to play again? (y/n): ").strip().lower()
+            if choice in ['y', 'n']:
+                return choice == 'y'
+            else:
+                print("❌ Invalid input. Please enter 'y' for yes or 'n' for no.")
+
     
 def main():
     game = WordGuessGame()
