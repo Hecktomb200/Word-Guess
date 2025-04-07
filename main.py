@@ -59,12 +59,33 @@ class WordGuessGame:
                 print("You already guessed that letter. Try a different one.")
             else:
                 return guess
+            
+    def prompt_difficulty(self):
+        print("\nChoose a difficulty level:")
+        print("1. Easy (4–6 letter words)")
+        print("2. Medium (6–8 letter words)")
+        print("3. Hard (8–10 letter words)")
+        
+        while True:
+            choice = input("Enter 1, 2, or 3: ").strip()
+            if choice == '1':
+                return (4, 6)
+            elif choice == '2':
+                return (6, 8)
+            elif choice == '3':
+                return (8, 10)
+            else:
+                print("❌ Invalid input. Please enter 1, 2, or 3.")
+
 
     def play(self):
-        self.word = self.fetch_word()
-        self.guessed_letters.clear()
-        self.remaining_attempts = self.max_attempts
+        min_len, max_len = self.prompt_difficulty()
+        self.word = self.fetch_word(min_length=min_len, max_length=max_len)
+        self.guessed_letters = set()
+        self.remaining_attempts = 7
 
+        print(f"\n🎮 Game started! Your word has {len(self.word)} letters.")
+        
         while self.remaining_attempts > 0 and not self.has_won():
             self.display_current_word()
             guess = self.get_player_guess()
@@ -74,9 +95,10 @@ class WordGuessGame:
 
         self.display_current_word()
         if self.has_won():
-            print("\nCongratulations! You've guessed the word!")
+            print("🎉 Congratulations! You guessed the word!")
         else:
-            print(f"\nGame Over! The word was: {self.word}")
+            print(f"💀 You're out of guesses! The word was: {self.word}")
+
 
     def has_won(self):
         return all(letter in self.guessed_letters for letter in self.word)
