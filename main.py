@@ -10,6 +10,7 @@ class WordGuessGame:
         self.word = ""
         self.guessed_letters = set()
         self.remaining_attempts = self.max_attempts
+        self.hint_used = False
 
     def fetch_word(self, min_length=4, max_length=10):
         try:
@@ -50,9 +51,29 @@ class WordGuessGame:
         print("Guessed Letters: ", " ".join(sorted(self.guessed_letters)))
         print(f"Remaining Attempts: {self.remaining_attempts}")
 
+    def use_hint(self):
+        import random
+        remaining_letters = [c for c in set(self.word) if c not in self.guessed_letters]
+        if not remaining_letters:
+            print("No letters left to hint!")
+            return
+        hint_letter = random.choice(remaining_letters)
+        self.guessed_letters.add(hint_letter)
+        print(f"💡 Hint: The letter '{hint_letter}' is in the word!")
+
     def get_player_guess(self):
         while True:
-            guess = input("\nEnter a letter: ").lower()
+            guess = input("Enter a letter (or type '!hint' to reveal one letter): ").lower()
+
+            if guess == "!hint":
+                if not self.hint_used:
+                    self.use_hint()
+                    self.hint_used = True
+                else:
+                    print("You already used your hint!")
+                self.display_current_word()
+                continue
+            
             if len(guess) != 1 or guess not in string.ascii_lowercase:
                 print("Invalid input. Please enter a single alphabetical character.")
             elif guess in self.guessed_letters:
