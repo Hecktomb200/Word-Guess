@@ -79,10 +79,12 @@ class WordGuessGame:
             print(f"\nGame Over! The word was: {self.word}")
 
     def has_won(self):
-        ...
+        return all(letter in self.guessed_letters for letter in self.word)
 
     def prompt_replay(self):
-        ...
+        choice = input("\nDo you want to play again? (y/n): ").lower()
+        return choice == 'y'
+    
 def main():
     game = WordGuessGame()
     game.display_welcome()
