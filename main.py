@@ -104,6 +104,7 @@ class WordGuessGame:
         self.word = self.fetch_word(min_length=min_len, max_length=max_len)
         self.guessed_letters = set()
         self.remaining_attempts = 7
+        self.hint_used = False
 
         print(f"\n🎮 Game started! Your word has {len(self.word)} letters.")
         
