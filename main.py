@@ -12,7 +12,30 @@ class WordGuessGame:
         self.remaining_attempts = self.max_attempts
 
     def fetch_word(self, min_length=4, max_length=10):
-        ...
+        try:
+            print("🔍 Fetching word from Datamuse...")
+            response = requests.get(
+                "https://api.datamuse.com/words",
+                params={"ml": "thing", "max": 1000},
+                timeout=5
+            )
+            if response.status_code == 200:
+                words = [item['word'].lower() for item in response.json()]
+                filtered_words = [w for w in words if min_length <= len(w) <= max_length and w.isalpha()]
+                if filtered_words:
+                    return random.choice(filtered_words)
+                else:
+                    print("⚠️ No suitable word from API. Using fallback.")
+        except requests.RequestException as e:
+            print(f"⚠️ Failed to fetch from Datamuse: {e}")
+        
+        # Fallback word list
+        fallback_words = [
+            "python", "hangman", "challenge", "developer", "keyboard",
+            "function", "variable", "loop", "array", "string"
+        ]
+        return random.choice(fallback_words)
+
 
 
 
