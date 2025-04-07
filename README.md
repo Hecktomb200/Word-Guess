@@ -9,6 +9,8 @@ A simple, single-player word guessing game built in Python. The player tries to 
 - Input validation to ensure fair play.
 - Replay option after each game.
 - Console-based interaction.
+- One hint which can be used each game.
+- Difficulty levels that increase word length.
 
 ## 🚀 Getting Started
 
